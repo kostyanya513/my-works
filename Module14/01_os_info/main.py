@@ -1,4 +1,4 @@
-# TODO запустить этот скрипт и закомитить результат его работы (файл os_info.txt)
+
 
 import platform
 import sys
@@ -9,6 +9,6 @@ info = 'OS info is \n{}\n\nPython version is {} {}'.format(
     platform.architecture(),
 )
 print(info)
-
+print(info1)
 with open('os_info.txt', 'w', encoding='utf8') as file:
     file.write(info)
