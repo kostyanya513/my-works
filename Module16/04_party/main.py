@@ -14,8 +14,11 @@ while True:
             guests.append(man)
     elif d == 'ушел':
         man = input('Имя гостя: ')
-        print('Пока,', man, '!')
-        guests.remove(man)
+        for dell_man in guests:
+            if dell_man == man:
+                print('Пока,', man, '!')
+                guests.remove(man)
+        print('Такого гостя нет!')
     elif d == 'пора спать':
         break
     else:
