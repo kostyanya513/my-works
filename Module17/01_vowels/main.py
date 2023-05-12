@@ -10,4 +10,4 @@ for i_list in list:
     new.extend(new_list)
 
 print('Список гласных букв:', new)
-print('Длина списка:', )
+print('Длина списка:', len(new))
