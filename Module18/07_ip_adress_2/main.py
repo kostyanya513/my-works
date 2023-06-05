@@ -1,16 +1,14 @@
-# TODO здесь писать код
-#while True:
-ip = input('Введите IP: ')
-iip = ip.split('.')
-if ip.find(',') > 0:
+ip = input('Введите IP: ').split('.')
+count = 0
+if len(ip) != 4:
     print('Адрес - это четыре числа, разделенные точками.')
 elif True:
-    for index in range(len(iip)):
-        if not iip[index].isdigit():
-            print(iip[index], '- это не целое число')
-            break
-        elif int(iip[index]) > 255:
-            print(iip[index], 'превышает 255.')
-            break
+    for index in range(len(ip)):
+        if not ip[index].isdigit():
+            print(ip[index], '- это не целое число')
+        elif int(ip[index]) > 255:
+            print(ip[index], 'превышает 255.')
         else:
-            print('IP-корректен')
+            count += 1
+if count == 4:
+    print('IP-корректен')
