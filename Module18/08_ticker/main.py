@@ -1,21 +1,17 @@
-def line(i):
-    k = i_second.index(i)
-    print(k)
-    return k
-
 first_line = input('Первая строка: ')
 second_line = input('Вторая строка: ')
-i_first = list(first_line)
-i_second = list(second_line)
 count = 0
-for index in i_first:
-    if index in i_second:
-        number = line(index)
+
+while count != len(second_line):
+    if second_line != first_line:
+        d = second_line[-1:]
+        c = second_line[:-1]
+        second_line = second_line[-1:] + second_line[:-1]
+        count += 1
+    elif second_line == first_line:
+        print('Первая строка получается из второй со сдвигом {}'.format(count))
+        count = 0
         break
 
-new_first = [first_line[(first_line.index(variable) + number) % len(first_line)]
-               for variable in second_line if variable in first_line]
-if i_first == new_first:
-    print('Первая строка получается из второй со сдвигом', number)
-else:
+if count == len(second_line):
     print('Первую строку нельзя получить из второй с помощью циклического сдвига.')
