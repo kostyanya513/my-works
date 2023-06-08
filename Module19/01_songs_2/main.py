@@ -10,4 +10,9 @@ violator_songs = {
     'Clean': 5.83
 }
 
-# TODO здесь писать код
+songs = int(input('Сколько песен выбрать? '))
+time = []
+for trek in range(1, songs + 1):
+    song = input('Введите название {} песни: '.format(trek))
+    time.append(violator_songs[song])
+print('Общее время звучания песен: {} минуты'.format(round(sum(time), 2)))
