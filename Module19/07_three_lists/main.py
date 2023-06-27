@@ -15,7 +15,9 @@ different_elements_2 = []
 for a in array_1:
   if a in array_2 and a in array_3:
     common_element_2.append(a)
-  elif not a in array_2 or a in array_3:
-    different_elements_2.append(a)
+  elif a not in array_2:
+    if a not in array_3:
+      different_elements_2.append(a)
 print('Решение без множеств:', common_element_2)
 print('Решение без множеств:', different_elements_2)
+
