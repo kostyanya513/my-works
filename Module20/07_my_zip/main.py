@@ -1,16 +1,11 @@
-import random
-import string
+def lenght(list, tuple):
+    return min(len(list), len(tuple))
 
-i_list = [random.choice(string.ascii_letters) for _ in range(5)]
-i_tuple = [random.randint(1, 10) for _ in range(5)]
-i_tuple_2 = (random.randint(1, 10) for _ in range(5))
 
-i_zip = zip(i_list, i_tuple)
-print(i_zip)
-for index in i_zip:
-    print(index)
-
-i_zip_2 = zip(i_list, i_tuple_2)
-print(i_zip_2)
-for index in i_zip_2:
-    print(index)
+list = 'abfc'
+tuple = (10, 20, 30, 40)
+pair = ((list[index], tuple[index]) for index in range(lenght(list, tuple)))
+print(pair)
+pair_1 = [(list[index], tuple[index]) for index in range(lenght(list, tuple))]
+print(pair_1)
+print(zip(list, tuple))
