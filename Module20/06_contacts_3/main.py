@@ -10,8 +10,9 @@ while True:
         glossary[(name[0], name[1])] = phon
         print('Текущий словарь контактов:', glossary)
     elif action == '2':
+        search_name = input('Введите фамилию для поиска: ')
         for man in glossary:
-            search_name = input('Введите фамилию для поиска: ')
+
             if search_name in man:
                 print(man[0], man[1], glossary[man])
     elif action == 'end':
