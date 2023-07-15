@@ -1,5 +1,7 @@
 # TODO здесь писать код
-def split_three_list(structure, num, struc=[], rezult_1 = [], rezult_2 = [], rezult_3 = []):
+def split_three_list(structure, num,
+                     struc=[], rezult_1=[], rezult_2=[], rezult_3=[]
+                     ):
     for i in structure:
         if i < num:
             rezult_1.append(i)
@@ -13,11 +15,19 @@ def split_three_list(structure, num, struc=[], rezult_1 = [], rezult_2 = [], rez
     print(struc)
     return struc
 
-def sorting_list(numbers, r1=[], r2=[], r3=[]):
-    number = numbers[-1]
-    print(number)
-    print(split_three_list(numbers, number))
 
+def sorting_list(numbers, v = [], t=None):
+    number = numbers[-1]
+    z = split_three_list(numbers, number)
+    for i in z:
+        n = i[-1]
+        t = split_three_list(i, n)
+        return t
+    v.append(t)
+    return v
+#    print(t)
+#    print(number)
+#    print(split_three_list(numbers, number))
 
 
 list_number = [5, 8, 9, 4, 2, 9, 1, 8]

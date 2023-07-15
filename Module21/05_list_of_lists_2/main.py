@@ -6,7 +6,7 @@ def expanded_list(structure, new_list = []):
         new_list.append(structure)
     elif isinstance(structure, list):
         for element in structure:
-            rezult = expanded_list(element)
+            expanded_list(element)
     return new_list
 
 
