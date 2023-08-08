@@ -1,10 +1,11 @@
-nums = open('numbers.txt', 'r', encoding='utf-8')
 summ = 0
-for elem in nums:
-    if elem.join(elem.split()):
-        summ += int(elem.join(elem.split()))
-nums.close()
+q = []
+with open('numbers.txt', 'r', encoding='utf-8') as nums:
+    for elem in nums:
+        q.extend(elem.strip().split())
+    for number in q:
+        summ += int(number)
+print(summ)
 
-answer = open('answer.txt', 'w')
-writing_to_file = answer.write(str(summ))
-answer.close()
+with open('answer.txt', 'w') as answer:
+    writing_to_file = answer.write(str(summ))
