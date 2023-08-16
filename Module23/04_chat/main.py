@@ -1,15 +1,17 @@
-def change_action(act):
-    if act == '1':
-        with open('chat_users.txt', 'r', encoding='utf-8') as messages_user:
-            print(messages_user.read())
-    elif act == '2':
-        message = input('Введите сообщение: ')
-        return chat.write(user + ': ' + message + '\n')
-
-
+name = input('Введите имя? ')
 while True:
-    chat = open('chat_users.txt', 'a', encoding='utf-8')
-    user = input('Имя пользователя: ')
-    action = input('Выберите одно из действий: 1. Посмотреть текст чата; 2. Отправить сообщение: ')
-    change_action(action)
-    chat.close()
+    print('Просмотр сообщения - 1, написать собщение - 2')
+    action = int(input('Введите 1 или 2: '))
+    if action == 1:
+        try:
+            with open('chat.txt', 'r', encoding='utf-8') as file:
+                messeges = file.readline()
+                print(''.join(messeges))
+        except FileNotFoundError:
+            print('Служебное сообщение: Пока ничего нет\n')
+    elif action == 2:
+        messege = input('Введите сообщение: ')
+        with open('chat.txt', 'a', encoding='utf-8') as file:
+            file.write('{}: {}\n'.format(name, messege))
+    else:
+        print('Неизвестная команда')
