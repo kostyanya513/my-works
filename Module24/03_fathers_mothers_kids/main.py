@@ -1,24 +1,25 @@
 class Parent:
     name = 'Константин'
     age = 38
-    children = 'Валерий'
+    children = ''
 
     def print_info(self):
-        print('Имя родителя: {}\nВозраст: {}\nСписок детей {}'.format(
+        print('Имя родителя: {}\nВозраст: {}\nСписок детей:  {}'.format(
             self.name, self.age, self.children
         ))
 
     def eat_child(self):
         if child.hungry == True:
             child.hungry = False
-            print('\nРебенок накормлен!')
+            print('\nПоел!')
             child.print_info_child()
 
     def calm(self):
         if child.calm == False:
             child.calm = True
-            print('\nРебенок успокоился!')
+            print('\nСпокоен!')
             child.print_info_child()
+
 
 class Children:
 
@@ -40,4 +41,3 @@ parent.print_info()
 child.print_info_child()
 parent.calm()
 parent.eat_child()
-
