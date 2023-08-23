@@ -1,58 +1,58 @@
-class Voda:
+class Water:
     def __init__(self, name='Вода'):
         self.name = name
 
     def __add__(self, other):
-        if isinstance(other, Vozduh):
-            return Shorm()
-        elif isinstance(other, Ogon):
-            return Par()
-        elif isinstance(other, Zemla):
-            return Graz()
+        if isinstance(other, Air):
+            return Storm()
+        elif isinstance(other, Fire):
+            return Steam()
+        elif isinstance(other, Earth):
+            return Mire()
 
 
-class Vozduh:
+class Air:
     def __init__(self, name='Воздух'):
         self.name = name
 
     def __add__(self, other):
-        if isinstance(other, Ogon):
-            return Molnia()
-        elif isinstance(other, Zemla):
-            return Pil()
+        if isinstance(other, Fire):
+            return Lightning()
+        elif isinstance(other, Earth):
+            return Dust()
 
 
-class Ogon:
+class Fire:
     def __init__(self, name='Огонь'):
         self.name = name
 
     def __add__(self, other):
-        if isinstance(other, Zemla):
+        if isinstance(other, Earth):
             return Lava()
 
 
-class Zemla:
+class Earth:
     def __init__(self, name='Земля'):
         self.name = name
 
 
-class Shorm:
+class Storm:
     name = 'Шторм'
 
 
-class Par:
+class Steam:
     name = 'Пар'
 
 
-class Graz:
+class Mire:
     name = 'Грязь'
 
 
-class Molnia:
+class Lightning:
     name = 'Молния'
 
 
-class Pil:
+class Dust:
     name = 'Пыль'
 
 
@@ -60,19 +60,19 @@ class Lava:
     name = 'Лава'
 
 
-voda = Voda()
-vozduh = Vozduh()
-ogon = Ogon()
-zemla = Zemla()
-a = voda + vozduh
-b = voda + ogon
-c = voda + zemla
-d = vozduh + ogon
-e = vozduh + zemla
-g = ogon + zemla
-print(voda.name, '+', vozduh.name, '=', a.name)
-print(voda.name, '+', ogon.name, '=', b.name)
-print(voda.name, '+', zemla.name, '=', c.name)
-print(vozduh.name, '+', ogon.name, '=', d.name)
-print(vozduh.name, '+', zemla.name, '=', e.name)
-print(ogon.name, '+', zemla.name, '=', g.name)
+water = Water()
+air = Air()
+fire = Fire()
+earth = Earth()
+a = water + air
+b = water + fire
+c = water + earth
+d = air + fire
+e = air + earth
+g = fire + earth
+print(water.name, '+', air.name, '=', a.name)
+print(water.name, '+', fire.name, '=', b.name)
+print(water.name, '+', earth.name, '=', c.name)
+print(air.name, '+', fire.name, '=', d.name)
+print(air.name, '+', earth.name, '=', e.name)
+print(fire.name, '+', earth.name, '=', g.name)
