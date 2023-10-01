@@ -7,23 +7,22 @@ class House:
         self.tumb = tumb
 
     def print_info_house(self):
-        print('  : {},   : {}'.format(
+        print('Еды в холодильнике: {}, Денег в тумбочке: {}'.format(
             self.holodilnik,
             self.tumb
         ))
 
 
 class Person:
-    def __init__(self, name, calm=50):
+    def __init__(self, name, c_house):
         self.name = name
-        self.calm = calm
-        self.house = House()
+        self.house = c_house
+        self.calm = 50
 
     def print_info(self):
-        print(': {};  : {}'.format(
+        print('Имя: {}; Степень сытости: {}'.format(
             self.name, self.calm
         ))
-        self.house.print_info_house()
 
     def eat(self, number):
         self.calm += number
@@ -42,8 +41,8 @@ class Person:
 
     def action(self, number):
         if self.calm <= 0:
-            print(' !')
-            raise ValueError('')
+            print('Жители умирают!')
+            raise ValueError('Умирают')
         if self.calm < 20:
             self.eat(number)
         elif self.house.holodilnik < 10:
@@ -58,9 +57,10 @@ class Person:
             self.play(number)
 
 
-man_1 = Person('')
-man_2 = Person('')
 house = House()
+man_1 = Person('Федя', house)
+man_2 = Person('Коля', house)
+
 for _ in range(365):
     number_1 = random.randint(1, 6)
     number_2 = random.randint(1, 6)
@@ -68,3 +68,4 @@ for _ in range(365):
     man_2.action(number_2)
 man_1.print_info()
 man_2.print_info()
+house.print_info_house()
