@@ -24,48 +24,45 @@ class Parent:
         self.age = age
         self.children = []
 
-    @staticmethod
-    def eat_child(hunger):
-        if hunger == 1:
-            print('\nНужно покормить ребенка! {} {}!'.format(child.name, child.hungry[0]))
-
-    @staticmethod
-    def calm(calmness):
-        if calmness == 1:
-            print('\nНужно успокоить ребенка! {} {}!'.format(child.name, child.calmness[0]))
-
-    @staticmethod
-    def verification(age):
-        if age - child.age > 16:
-            return age
-        else:
-            raise ValueError('Ребенок должен быть старше родителя на 16 лет!')
-
     def print_info_parent(self):
-        print('Меня зовут: {}\nМне: {}'.format(self.name, self.age))
+        print('\nМеня зовут: {}\nМне: {}'.format(self.name, self.age))
         print('Мои дети:')
         for i_child in self.children:
             i_child.print_info_child()
-            if i_child.ch_calm == 1:
-                self.calm(i_child.ch_calm)
-            if i_child.ch_hungry == 1:
-                self.eat_child(i_child.ch_hungry)
+
+    def verification_calm(self, child):
+        if child.ch_calm == 1:
+            print('\n{} нужно успокоить!'.format(child.name))
+            self.children[0].ch_calm = 0
+
+    def verification_hungry(self, child):
+        if child.ch_hungry == 1:
+            print('\n{} нужно покормить!'.format(child.name))
+            self.children[0].ch_hungry = 0
 
     def add_child(self, next_child):
-        if self.verification(self.age):
-            self.children.append(next_child)
+        self.children.append(next_child)
 
 
 number_children = random.randint(1, 5)
 man = Parent('Кот', 32)
-for _ in range(number_children):
-    calm = random.randint(0, 1)
-    hungry = random.randint(0, 1)
-    name_child = random.choice(string.ascii_uppercase)
-    for index in range(5):
-        name_child += random.choice(string.ascii_lowercase)
-    age_child = random.randint(1, 16)
-    child = Children(name_child, age_child, calm, hungry)
-    man.add_child(child)
-man.print_info_parent()
 
+calm_1 = random.randint(0, 1)
+hungry_1 = random.randint(0, 1)
+child_1 = Children(random.choice(string.ascii_letters), random.randint(1, 15), calm_1, hungry_1)
+man.add_child(child_1)
+
+calm_2 = random.randint(0, 1)
+hungry_2 = random.randint(0, 1)
+child_2 = Children(random.choice(string.ascii_letters), random.randint(1, 15), calm_2, hungry_2)
+man.add_child(child_2)
+
+man.print_info_parent()
+if calm_1 or hungry_1:
+    man.verification_calm(child_1)
+    man.verification_hungry(child_1)
+    child_1.print_info_child()
+if calm_1 or hungry_1:
+    man.verification_calm(child_2)
+    man.verification_hungry(child_2)
+    child_2.print_info_child()
