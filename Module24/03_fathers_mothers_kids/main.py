@@ -33,12 +33,12 @@ class Parent:
     def verification_calm(self, child):
         if child.ch_calm == 1:
             print('\n{} нужно успокоить!'.format(child.name))
-            self.children[0].ch_calm = 0
+            child.ch_calm = 0
 
     def verification_hungry(self, child):
         if child.ch_hungry == 1:
             print('\n{} нужно покормить!'.format(child.name))
-            self.children[0].ch_hungry = 0
+            child.ch_hungry = 0
 
     def add_child(self, next_child):
         self.children.append(next_child)
@@ -62,7 +62,7 @@ if calm_1 or hungry_1:
     man.verification_calm(child_1)
     man.verification_hungry(child_1)
     child_1.print_info_child()
-if calm_1 or hungry_1:
+if calm_2 or hungry_2:
     man.verification_calm(child_2)
     man.verification_hungry(child_2)
     child_2.print_info_child()
