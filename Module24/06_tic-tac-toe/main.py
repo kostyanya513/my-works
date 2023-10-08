@@ -1,171 +1,120 @@
 class Cell:
-    condition = ['-', 'O', 'X']
-
-    def __init__(self, number):
-        self.number = number
+    condition = ['X', '0', 'Свободна']
 
 
 class Board:
-    cells = [
-        Cell.condition[0], Cell.condition[0], Cell.condition[0],
-        Cell.condition[0], Cell.condition[0], Cell.condition[0],
-        Cell.condition[0], Cell.condition[0], Cell.condition[0]
-    ]
+    cells = [Cell.condition[2] for _ in range(1, 10)]
+
+    def print_board(self):
+        print(self.cells)
 
 
 class Player:
-    name1 = 'Крестик'
-    name2 = 'Нолик'
+    def __init__(self, name):
+        self.name = name
 
-    def step_1(self):
-        print('На какую клетку ходит {}?'.format(Player.name1))
-        step_1 = int(input())
-        Game.step_1(self, step_1)
-
-    def step_2(self):
-        print('На какую клетку ходит {}?'.format(Player.name2))
-        step_2 = int(input())
-        Game.step_2(self, step_2)
+    def hod_player(self):
+        print('{}'.format(self.name), end=' ')
+        hod = int(input('ходит на клетку: '))
+        return hod
 
 
 class Game:
-    def __init__(self):
-        self.play = 0
-        self.viktory1 = 0
-        self.viktory2 = 0
+    def __init__(self, cell):
+        self.players = []
+        self.cell = cell
+        self.count = 0
+        self.count_1 = 0
+        self.count_2 = 0
 
-    #
-    def new_play(self):
-        while True:
-            print('Начнем игру?')
-            start = int(input('1 - Да; 2 - Нет: '))
-            if start == 1:
-                print('Играем!')
-                self.start_game()
-                self.game_score()
-            elif start == 2:
-                print('Не играем')
-                break
-            else:
-                print('Неправильная команда!')
+    def add_player(self, player):
+        self.players.append(player)
 
-    def start_game(self):
-        print('Очищаем поле!')
-        Game.clear_field(self)
+    @staticmethod
+    def proverka(cells, cond_cell):
+        if (cells[0] == cond_cell and cells[3] == cond_cell and cells[6] == cond_cell) \
+                or (cells[1] == cond_cell and cells[4] == cond_cell and cells[7] == cond_cell) \
+                or (cells[2] == cond_cell and cells[5] == cond_cell and cells[8] == cond_cell) \
+                or (cells[0] == cond_cell and cells[1] == cond_cell and cells[2] == cond_cell) \
+                or (cells[3] == cond_cell and cells[4] == cond_cell and cells[5] == cond_cell) \
+                or (cells[6] == cond_cell and cells[7] == cond_cell and cells[8] == cond_cell) \
+                or (cells[0] == cond_cell and cells[4] == cond_cell and cells[8] == cond_cell) \
+                or (cells[2] == cond_cell and cells[4] == cond_cell and cells[6] == cond_cell):
+            return True
 
-    def first_move(self):
-        self.play += 1
-        begin = int(input('Кто начинает? 1 (играет за крестики) или 2 (играет за нолики): '))
-        if begin == 1:
-            Player.step_1(self)
-        elif begin == 2:
-            Player.step_2(self)
+    def count_play(self, name_player):
+        if name_player == self.players[0].name:
+            self.count_1 += 1
         else:
-            print('Нет такого игрока!')
+            self.count_2 += 1
 
-    def game_score(self):
-        print('Количество игр: {}, Побед Крестика: {}, Побед Нолика: {}'.format(
-            self.play,
-            self.viktory1,
-            self.viktory2,
-        ))
+    def move(self, who):
+        while True:
+            if who == self.players[0].name:
+                if self.one_move(self.players[0], Cell.condition[0]):
+                    return True
+                else:
+                    self.one_move(self.players[1], Cell.condition[1])
+            elif who == self.players[1].name:
+                if self.one_move(self.players[1], Cell.condition[1]):
+                    return True
+                else:
+                    self.one_move(self.players[0], Cell.condition[0])
 
-    def hod1(self, number):
-        one_move = True
-        game = True
-        while one_move:
-            if Board.cells[number - 1] == Cell.condition[0]:
-                Board.cells[number - 1] = Cell.condition[2]
-                print('Поле игры')
-                print('{}\t{}\t{}\n{}\t{}\t{}\n{}\t{}\t{}'.format(
-                    Board.cells[0],
-                    Board.cells[1],
-                    Board.cells[2],
-                    Board.cells[3],
-                    Board.cells[4],
-                    Board.cells[5],
-                    Board.cells[6],
-                    Board.cells[7],
-                    Board.cells[8])
-                )
-                if self.proverka(Board.cells, 'X'):
-                    print('Крестик победил!')
-                    self.viktory1 += 1
-                    break
-                if Board.cells.count('-') == 0:
-                    game = False
-                    break
-                Player.step_2(self)
-                break
-            else:
+    def one_move(self, player, cond):
+        index_cell = player.hod_player() - 1
+        while True:
+            if self.cell.cells[index_cell] != Cell.condition[2]:
                 print('Клетка занята! Выбери другую.')
-                number = int(input('Ваш ход: '))
-        if not game:
-            print('Стоп игра!')
-
-    def hod2(self, number):
-        one_move = True
-        game = True
-        while one_move:
-            if Board.cells[number - 1] == Cell.condition[0]:
-                Board.cells[number - 1] = Cell.condition[1]
-                print('Поле игры')
-                print('{}\t{}\t{}\n{}\t{}\t{}\n{}\t{}\t{}'.format(
-                    Board.cells[0],
-                    Board.cells[1],
-                    Board.cells[2],
-                    Board.cells[3],
-                    Board.cells[4],
-                    Board.cells[5],
-                    Board.cells[6],
-                    Board.cells[7],
-                    Board.cells[8])
-                )
-                if self.proverka(Board.cells, 'O'):
-                    print('Нолик победил!')
-                    self.viktory2 += 1
-                    break
-                if Board.cells.count('-') == 0:
-                    game = False
-                    break
-                Player.step_1(self)
-                break
+                index_cell = player.hod_player() - 1
             else:
-                print('Клетка занята! Выбери другую.')
-                number = int(input('Ваш ход: '))
-        if not game:
-            print('Стоп игра!')
-
-    def proverka(self, cells, number):
-        if (cells[0] == number and cells[3] == number and cells[6] == number) \
-                or (cells[1] == number and cells[4] == number and cells[7] == number) \
-                or (cells[2] == number and cells[5] == number and cells[8] == number) \
-                or (cells[0] == number and cells[1] == number and cells[2] == number) \
-                or (cells[3] == number and cells[4] == number and cells[5] == number) \
-                or (cells[6] == number and cells[7] == number and cells[8] == number) \
-                or (cells[0] == number and cells[4] == number and cells[8] == number) \
-                or (cells[2] == number and cells[4] == number and cells[6] == number):
-            print('Победа!')
+                self.cell.cells[index_cell] = cond
+                break
+        print(self.cell.cells)
+        if self.proverka(self.cell.cells, cond):
+            print('Победил {}'.format(player.name))
+            self.count_play(player.name)
             return True
         else:
             return False
 
-    def clear_field(self):
-        Board.cells = [Cell.condition[0] for _ in range(9)]
+    def play(self):
+        self.cell.cells = [Cell.condition[2] for _ in range(9)]
+        print(self.cell.cells)
+        for _ in range(9):
+            print('Кто ходит? {} или {}?'.format(self.players[0].name, self.players[1].name), end=' ')
+            whose_move = input()
+            if self.move(whose_move):
+                print('Игра завершена!')
+                return True
+        print('Ничья!')
 
-        print('{}\t{}\t{}\n{}\t{}\t{}\n{}\t{}\t{}'.format(
-            Board.cells[0],
-            Board.cells[1],
-            Board.cells[2],
-            Board.cells[3],
-            Board.cells[4],
-            Board.cells[5],
-            Board.cells[6],
-            Board.cells[7],
-            Board.cells[8])
-        )
-        self.first_move()
+    def new_play(self):
+        print('Играют два игрока: {} и {}'.format(self.players[0].name, self.players[1].name))
+        self.play()
+        self.count += 1
+        while True:
+            next_play = input('Продолжаем играть? (Да/Нет): ')
+            if next_play.lower() == 'да':
+                self.play()
+                self.count += 1
+            elif next_play.lower() == 'нет':
+                print('Игр {}; {} победил {} раз; {} победил {} раз'.format(
+                    self.count,
+                    self.players[0].name,
+                    self.count_1,
+                    self.players[1].name,
+                    self.count_2
+                ))
+                break
+            else:
+                print('Неизвестная команда! Повторите ввод.')
 
 
-play = Game()
-play.new_play()
+board = Board()
+player_1 = Player('Кот')
+player_2 = Player('Пес')
+game = Game(board)
+game.add_player(player_1)
+game.add_player(player_2)
+game.new_play()
