@@ -30,7 +30,8 @@ class Monster:
         return self.__is_alive
 
     def take_damage(self, damage):
-        print("\t", self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(self.get_hp()))
+        print("\t", self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(
+            self.get_hp()))
         if self.get_hp() <= 0:
             self.__is_alive = False
 
