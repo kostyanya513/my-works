@@ -22,6 +22,11 @@ class DepressionError(Exception):
 
 
 class Karma:
+    """
+    Класс кармы буддиста
+    Attributes:
+        karma (int): карма буддиста
+    """
     karma = 500
 
     @staticmethod
@@ -57,6 +62,11 @@ class Karma:
                 pass
 
     def one_day(self):
+        """
+        Метод одного дня
+        :return: количество кармы
+        :rtype: int
+        """
         while True:
             index = random.randint(1, 10)
             if 1 <= index <= 5:
@@ -66,6 +76,10 @@ class Karma:
                 return random.randint(1, 7)
 
     def life(self):
+        """
+        Метод достижения просветления буддиста
+        :return: выводит на экран информацию о достижении просветления
+        """
         while True:
             self.karma -= self.one_day()
             if self.karma <= 0:
