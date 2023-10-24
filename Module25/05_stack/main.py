@@ -10,16 +10,31 @@ class Stek:
 
 
 class TaskManager:
+    """
+    Класс Менеджер задач
+    Attributes:
+        d (dict): звдачи
+    """
     def __init__(self):
         self.d = {}
 
     def new_task(self, a, b):
+        """
+        Метод добавления задачи в словарь задач
+        :param a: (str) задача
+        :param b: (int) приоритет
+        """
         if b in self.d.keys():
             self.d[b].append(a)
         else:
             self.d[b] = [a]
 
     def __str__(self):
+        """
+        Магический метод вывода задач по приоритету: чем меньше число, тем выше задача
+        k (int): ключ
+        v (str): значение
+        """
         sort = sorted(self.d.items())
         rez = ''
         for k, v in sort:
