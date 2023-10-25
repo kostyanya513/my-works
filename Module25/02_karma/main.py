@@ -2,23 +2,28 @@ import random
 
 
 class CarCrashError(Exception):
-    pass
+    def __str__(self):
+        return 'CarCrashError'
 
 
 class DrunkError(Exception):
-    pass
+    def __str__(self):
+        return 'DrunkError'
 
 
 class KillError(Exception):
-    pass
+    def __str__(self):
+        return 'KillError'
 
 
 class GluttonyError(Exception):
-    pass
+    def __str__(self):
+        return 'GluttonyError'
 
 
 class DepressionError(Exception):
-    pass
+    def __str__(self):
+        return 'DepressionError'
 
 
 class Karma:
@@ -29,38 +34,6 @@ class Karma:
     """
     karma = 500
 
-    @staticmethod
-    def errors(num):
-        with open('karma.log', 'a', encoding='utf8') as file:
-            try:
-                if num == 1:
-                    file.write('KillError' + '\n')
-                    raise KillError
-                elif num == 2:
-                    file.write('DrunkError' + '\n')
-                    raise DrunkError
-                elif num == 3:
-                    file.write('CarCrashError' + '\n')
-                    raise CarCrashError
-                elif num == 4:
-                    file.write('GluttonyError' + '\n')
-                    raise GluttonyError
-                elif num == 5:
-                    file.write('DepressionError' + '\n')
-                    raise DepressionError
-                else:
-                    return random.randint(1, 7)
-            except KillError:
-                pass
-            except DrunkError:
-                pass
-            except CarCrashError:
-                pass
-            except GluttonyError:
-                pass
-            except DepressionError:
-                pass
-
     def one_day(self):
         """
         Метод одного дня
@@ -68,10 +41,14 @@ class Karma:
         :rtype: int
         """
         while True:
-            index = random.randint(1, 10)
-            if 1 <= index <= 5:
-                self.errors(index)
-                return 0
+            if random.randint(1, 10) == 1:
+                exeption = random.choice([
+                    KillError(),
+                    DrunkError(),
+                    CarCrashError(),
+                    GluttonyError(),
+                    DepressionError()])
+                raise exeption
             else:
                 return random.randint(1, 7)
 
@@ -81,7 +58,11 @@ class Karma:
         :return: выводит на экран информацию о достижении просветления
         """
         while True:
-            self.karma -= self.one_day()
+            with open('karma.log', 'a', encoding='utf8') as file:
+                try:
+                    self.karma -= self.one_day()
+                except Exception as ex:
+                    file.write('{}\n'.format(ex))
             if self.karma <= 0:
                 print('Достиг просветления!')
                 break
