@@ -1,12 +1,17 @@
+from queue import LifoQueue
+
+
 class Stek:
+    stack = LifoQueue()
+
     def __init__(self):
         self.m = []
 
     def put(self, c):
-        return self.m.append(c)
+        self.stack.put(c)
 
-    def pop(self):
-        self.m.pop()
+    def get(self):
+        item = self.stack.get()
 
 
 class TaskManager:
@@ -15,7 +20,9 @@ class TaskManager:
     Attributes:
         task_list (dict): звдачи
     """
+
     def __init__(self):
+
         self.task_list = {}
 
     def new_task(self, task, priority):
@@ -42,6 +49,16 @@ class TaskManager:
             result += '{}: '.format(key) + '; '.join(value) + '\n'
         return 'Результат:\n{}'.format(result)
 
+
+"""
+У вас в словарь попадает название задачи, а должен попадать экземпляр класса Stack(), 
+т.к. в задании " Сам менеджер работает на основе Стэка (не наследование!). 
+Иначе для чего у вас класс Stek ?? 
+
+Подскажу архитектуру. TaskManager содержит словарь {приоритет, Стек}. 
+При добавлении добавляется задача в стек(если уже есть задачи с таким приоритетом) 
+или добавляется Стек и одна задача в него.
+"""
 
 manager = TaskManager()
 manager.new_task("сделать уборку", 4)
