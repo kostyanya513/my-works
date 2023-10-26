@@ -82,7 +82,7 @@ class Hero:
         Магический метод вывода информации о своем состоянии
         :raise: Вы забыли переопределить метод __str__!
         """
-        raise NotImplementedError("Вы забыли переопределить метод __str__!")
+        return '{}: здоровье {}'.format(self.name, self.get_hp())
 
 
 class Healer(Hero):
@@ -106,17 +106,18 @@ class Healer(Hero):
         """
         target.take_damage(self.get_power() / 2)
 
-    def take_damage(self, damage):
+    def take_damage(self, power):
         """
         Метод получения урона - т.к. защита целителя слаба - он получает на 20% больше урона
         """
-        self.set_hp(self.get_hp() - 1.2 * damage)
+        self.set_hp(self.get_hp() - 1.2 * power)
+        super().take_damage(power)
 
-    def healing(self):
+    def healing(self, target):
         """
         Метод исцеления - увеличивает здоровье цели на величину равную своей магической силе
         """
-        self.set_hp(self.get_hp() + self.magic_power)
+        target.set_hp(self.get_hp() + self.magic_power)
 
     def make_a_move(self, friends, enemies):
         """
@@ -129,24 +130,21 @@ class Healer(Hero):
         """
         self.set_power(self.get_power() + 0.1)
         print(self.name, end=' ')
-        chosen_target = friends[0]
-        min_health = chosen_target.get_hp()
+        target_friend = friends[0]
+        min_health = target_friend.get_hp()
+        for friend in friends:
+            if friend.get_hp() < min_health:
+                target_friend = friend
+                min_health = target_friend.get_hp()
         if min_health < 60:
-            print('Исцеляю', chosen_target.name)
-            self.healing()
+            print('Исцеляю {}'.format(target_friend.name))
+            self.healing(target_friend)
         else:
             if not enemies:
                 return
             print("Атакую ближнего -", enemies[0].name)
             self.attack(enemies[0])
         print('\n')
-
-    def __str__(self):
-        """
-        Магический метод вывода информации о своем состоянии
-        :raise: Вы забыли переопределить метод __str__!
-        """
-        return '{}: здоровье {}'.format(self.name, self.get_hp())
 
 
 class Tank(Hero):
@@ -171,29 +169,30 @@ class Tank(Hero):
         """
         target.take_damage(self.get_power() * 2)
 
-    def take_damage(self, damage):
+    def take_damage(self, power):
         """
         Метод получения урона - весь входящий урон делится на показатель защиты и потом отнимается от здоровья
         """
-        self.set_hp(self.get_hp() - (damage / self.defense) / 2)
+        self.set_hp(self.get_hp() - (power / self.defense) / 2)
+        super().take_damage(power)
 
     def raise_shield(self):
         """
         Метод поднятия щита - если щит не поднят - поднимает щит.
         Это увеличивает показатель брони в 2 раза, но уменьшает показатель силы в 2 раза.
         """
-        if not self.shield:
-            self.defense = self.defense * 2
-            self.set_power(self.get_power() * 2)
+        self.defense = self.defense * 2
+        self.set_power(self.get_power() * 2)
+        self.shield = False
 
     def lower_shields(self):
         """
         Метод опускания щита - если щит поднят - опускает щит.
         Это уменьшает показатель брони в 2 раза, но увеличивает показатель силы в 2 раза.
         """
-        if self.shield:
-            self.defense = self.defense / 2
-            self.set_power(self.get_power() / 2)
+        self.defense = self.defense / 2
+        self.set_power(self.get_power() / 2)
+        self.shield = True
 
     def make_a_move(self, friends, enemies):
         """
@@ -201,32 +200,22 @@ class Tank(Hero):
         Args:
             friends (list): союзники
             enemies (list): враги
-        Атакует врага, у которого здоровье больше 60, если такого нет, то поднимает щит если свое здоровье меньше 70.
+        Атакует ближайщего врага, затем поднимает щит, если он опущен
         Если поднят щит, то опускает его
         """
         self.set_power(self.get_power() + 0.1)
         print(self.name, end=' ')
         if not enemies:
             return
-        for enemie in enemies:
-            if enemie.get_hp() > 60:
-                print('Атакую - ', enemie.name)
-                self.attack(enemie)
-            else:
-                if self.get_hp() < 70:
-                    print('{} Поднимает щит!'.format(self.name))
-                    self.raise_shield()
-                else:
-                    print('{} Опускает щит!'.format(self.name))
-                    self.lower_shields()
+        print('Атакую ближайшего врага - ', enemies[0].name)
+        self.attack(enemies[0])
+        if self.shield:
+            print('{} Поднимает щит!'.format(self.name))
+            self.raise_shield()
+        else:
+            print('- Опускает щит!'.format(self.name))
+            self.lower_shields()
         print('\n')
-
-    def __str__(self):
-        """
-        Магический метод вывода информации о своем состоянии
-        :raise: Вы забыли переопределить метод __str__!
-        """
-        return '{}: здоровье {}'.format(self.name, self.get_hp())
 
 
 class Attacker(Hero):
@@ -251,11 +240,12 @@ class Attacker(Hero):
         target.take_damage(self.get_power() * self.power_multiply)
         self.power_down()
 
-    def take_damage(self, damage):
+    def take_damage(self, power):
         """
         Метод получения урона -получает урон равный входящему урона умноженному на половину коэффициента усиления урона
         """
-        self.set_hp(self.get_hp() - damage * (self.power_multiply / 2))
+        self.set_hp(self.get_hp() - power * (self.power_multiply / 2))
+        super().take_damage(power)
 
     def power_up(self):
         """
@@ -275,28 +265,22 @@ class Attacker(Hero):
         Args:
             friends (list): союзники
             enemies (list): враги
-        Атакует врага, у которого здоровье больше 60,
-        если такого нет, то при коэффициенте усиления меньше 1 увеличивает коэффициент,
-        если коэффициент усиления больше 1 - уменьшает коэффициент
+        Если коэффициенте усиления меньше 1, то увеличивает коэффициент
+        Атакует ближайшего врага,если у него здоровье больше 60,
+        если нет, то атакует случайного игрока
         """
         self.set_power(self.get_power() + 0.1)
         print(self.name, end=' ')
         if not enemies:
             return
-        for enemie in enemies:
-            if enemie.get_hp() > 60:
-                print('Атакую - ', enemie.name)
-                self.attack(enemie)
-            else:
-                if self.power_multiply <= 1:
-                    self.power_up()
-                else:
-                    self.power_down()
+        if self.power_multiply <= 1:
+            self.power_up()
+        if enemies[0].get_hp() > 60:
+            print('Атакую - ', enemies[0].name)
+            self.attack(enemies[0])
+        else:
+            target = random.choice(enemies)
+            print("Случайно атакую -", target.name)
+            print()
+            self.attack(target)
         print('\n')
-
-    def __str__(self):
-        """
-        Метод опускания щита - если щит поднят - опускает щит.
-        Это уменьшает показатель брони в 2 раза, но увеличивает показатель силы в 2 раза.
-        """
-        return '{}: здоровье {}'.format(self.name, self.get_hp())
