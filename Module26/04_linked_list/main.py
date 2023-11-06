@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, n):
-        self.n = n
+    def __init__(self, number):
+        self.number = number
         self.next = None
 
 
@@ -24,28 +24,28 @@ class LinkedList:
         if self.len < num:
             return 'Такого элемента нет!'
         curr = self.first
-        c = 0
+        count = 0
         while curr is not None:
-            c += 1
-            if c == num:
-                return curr.n
+            count += 1
+            if count == num:
+                return curr.number
             curr = curr.next
 
     def remove(self, num):
         if self.len < num:
             return 'Такого элемента нет!'
         curr = self.first
-        c = 0
+        count = 0
         old = None
         while curr is not None:
-            if c == num:
+            if count == num:
                 if curr.next is None:
                     self.last = curr
                 old.next = curr.next
                 break
             old = curr
             curr = curr.next
-            c += 1
+            count += 1
 
     def __str__(self):
         if self.first != 0:
