@@ -50,10 +50,10 @@ class LinkedList:
     def __str__(self):
         if self.first != 0:
             current = self.first
-            out = '[ ' + str(current.n) + ' '
+            out = '[ ' + str(current.number) + ' '
             while current.next is not None:
                 current = current.next
-                out += str(current.n) + ' '
+                out += str(current.number) + ' '
             return out + ']'
         return 'Текущий список: []'
 
