@@ -8,22 +8,22 @@ def how_are_you(func: Callable) -> Callable:
     Затем при любом ответе запускает дерируемую функцию.
     """
     @functools.wraps(func)
-    def wrapper():
+    def wrapper(*args, **kwargs):
         input('Как дела? ')
         print('А у меня не очень! Ладно, держи свою функцию.')
-        return print(func())
+        return func(*args, **kwargs)
 
     return wrapper
 
 
 @how_are_you
-def test() -> str:
+def test(a: Any) -> Any:
     """
     Функция, которая выводит на экран строку
     :return: строка
     """
-    return '<Тут что-то происходит...>'
+    print(a, 'Кукареку')
 
 
-test()
+test(200)
 print('\nФункция:\t{};\nДокументация:\t{}'.format(test.__name__, test.__doc__))
