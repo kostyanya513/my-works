@@ -1,8 +1,59 @@
-# TODO здесь писать код
+class LRUCache:
+    """
+    Класс, который хранит ограниченное количество объектов и, при превышении лимита,
+    удаляет самые давние (самые старые) использованные элементы.
+    Args:
+        capacity (int): лимит
+    Attributes:
+        element (list): список объектов
+        dict (tuple): словарь объектов
+    """
+    def __init__(self, capacity: int) -> None:
+        self.capacity = capacity
+        self.element = []
+        self.dict = {}
 
+    @property
+    def cache(self) -> list:
+        """
+        Геттер для получения списка объектов
+        :return: список объектов
+        :rtype: list
+        """
+        return self.element
 
+    @cache.setter
+    def cache(self, key: tuple) -> None:
+        """
+        Сеттер для создания словаря объектов
+        :param key: кортеж объекта
+        :rtype: tuple
+        :return: словарь объектов
+        """
+        self.element.append(key)
+        if len(self.element) > self.capacity:
+            self.element.pop(0)
+        self.dict = {key: value for key, value in self.element}
+
+    def print_cache(self) -> None:
+        """
+        Метод для вывода на экран текущего кеш
+        """
+        print('\nLRU Cache:')
+        for key, value in self.dict.items():
+            print('{}\t:\t{}'.format(key, value))
+
+    def get(self, key: str) -> str:
+        """
+        Метод для вывода на экран значения по ключу
+        :param key: ключ кэша
+        :return: значение кэша
+        """
+        return '\n' + self.dict[key]
 
 # Создаем экземпляр класса LRU Cache с capacity = 3
+
+
 cache = LRUCache(3)
 
 # Добавляем элементы в кэш
