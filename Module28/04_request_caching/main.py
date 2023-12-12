@@ -45,10 +45,14 @@ class LRUCache:
 
     def get(self, key: str) -> str:
         """
-        Метод для вывода на экран значения по ключу
+        Метод для вывода на экран значения по ключу и установления элемента по количеству запросов
         :param key: ключ кэша
         :return: значение кэша
         """
+        for elem in self.element:
+            if key in elem:
+                cache_element = self.element.pop(self.element.index(elem))
+                self.element.append(cache_element)
         return '\n' + self.dict[key]
 
 # Создаем экземпляр класса LRU Cache с capacity = 3
