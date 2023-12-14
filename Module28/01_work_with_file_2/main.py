@@ -17,8 +17,9 @@ class File:
 
     def __enter__(self) -> TextIO:
         if os.path.exists(self.efile):
-            print('Файл уже существует')
-        self.i_file = open(self.efile, self.file_mode, encoding='utf8')
+            self.i_file = open(self.efile, self.file_mode, encoding='utf8')
+        else:
+            self.i_file = open(self.efile, 'w', encoding='utf8')
         return self.i_file
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> Optional[bool]:
@@ -27,5 +28,5 @@ class File:
             return True
 
 
-with File('example.txt', 'w') as file:
+with File('example.txt', 'a') as file:
     file.write('Действие')
