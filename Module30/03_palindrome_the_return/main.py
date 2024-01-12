@@ -1,14 +1,10 @@
 import collections
 
 if __name__ == '__main__':
-
     def can_be_poly(string: str) -> bool:
-        res = collections.deque(string)  # возвращаем последовательность
-        while len(res) > 1:  # цикл, проверяет уменьшение длины последовательности
-            if collections.deque.popleft(res) != collections.deque.pop(res):  # сравниваем первый и последний удаленные # элементы последовательности
-                return False
-        return True
+        return len(list(filter(lambda elem: elem % 2, collections.Counter(string).values()))) >= 2
 
 
     print(can_be_poly('abcba'))
     print(can_be_poly('abbbc'))
+
