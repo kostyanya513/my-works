@@ -1,16 +1,33 @@
 import json
 import requests
+from pprint import pprint
 
 if __name__ == '__main__':
 
-    my_req = requests.get('https://swapi.dev/api/starships/12/')
-    res = json.loads(my_req.text)
+    def search_ship(file, ship):
+        for key, value in file.items():
+            if value == ship:
+                result = file
+            if isinstance(value, dict):
+                search_ship(value, ship)
+            if isinstance(value, list):
+                for i_value, j_value in enumerate(value):
+                    for key, value in j_value.items():
+                        if value == ship:
+                            result = j_value
+        return result
 
-    starships = {'name': res['name'],
-                 'max_atmosphering_speed': res['max_atmosphering_speed'],
-                 'starship_class': res['starship_class'],
+
+    my_req = requests.get('https://swapi.dev/api/starships/')
+    res = json.loads(my_req.text)
+    right_ship = 'X-wing'
+    result_ship = search_ship(res, right_ship)
+
+    starships = {'name': result_ship['name'],
+                 'max_atmosphering_speed': result_ship['max_atmosphering_speed'],
+                 'starship_class': result_ship['starship_class'],
                  'pilots': []}
-    for i in res['pilots']:
+    for i in result_ship['pilots']:
         pilot = requests.get(i)
         json_pilot = json.loads(pilot.text)
         planet = requests.get(json_pilot['homeworld'])
@@ -21,7 +38,7 @@ if __name__ == '__main__':
                       'homeworld': json_planet['name'],
                       'homeworld_url': json_pilot['homeworld']}
         starships['pilots'].append(info_pilot)
-    print(starships)
+    pprint(starships)
 
     with open('X_wing.json', 'w') as file:
         json.dump(starships, file, indent=4)
