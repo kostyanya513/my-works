@@ -1,22 +1,22 @@
 from telebot.types import Message
 import requests
 import json
-from api.api import API_TOWN
-from loader import bot
+
+from api.api import API_GEO
 from config_data.config import API_KEY
+from loader import bot
+from states.state_bot import MyStates
 from keyboards.inline.loc_button import gen_markup
-from database.received_weather import user_dict_weather
 
 
-# Этот хэндлер будет реагировать на любые сообщения, кроме "/start" и "/help" -
-# если город введен корректно, то записывает данные о погоде в словарь, создает клавиатуру с командами;
-# если город введен не корректно, то просит ввести корректное название города
-@bot.message_handler(content_types=['text'])
-def bot_weather_town(message: Message) -> None:
-    res = requests.get(f"{API_TOWN}{message.text}&units=metric&lang=ru&appid={API_KEY}")
-    weather_town = json.loads(res.text)
-    if res.status_code == 200:
-        bot.send_message(chat_id=message.chat.id, text='Что вы хотите знать?', reply_markup=gen_markup())
-        user_dict_weather.update(weather_town)
+# Этот хендлер проверяет полученнный файл API и
+# формирует клавиатуру с кнопками возможных локаций
+@bot.message_handler(state=MyStates.start)
+def city(message: Message) -> None:
+    res = requests.get(f"{API_GEO}{message.text}&limit=5&appid={API_KEY}", timeout=10)
+    weather_town = json.loads(s=res.text)
+    if weather_town:
+        bot.send_message(chat_id=message.chat.id, text=f'Уточните пожалуйста!', reply_markup=gen_markup(weather_town))
+        bot.delete_state(user_id=message.from_user.id, chat_id=message.chat.id)
     else:
-        bot.send_message(chat_id=message.chat.id, text='Попробуйте ввести город еще раз!')
+        bot.reply_to(message=message, text='Такого города нет! Попробуйте заново!')

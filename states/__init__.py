@@ -1,2 +1,1 @@
-class States:
-    pass
+from . import state_bot
