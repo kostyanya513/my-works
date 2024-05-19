@@ -3,14 +3,17 @@ import json
 
 from config_data.config import API_KEY
 from telebot.types import CallbackQuery
+from keyboards.inline.loc_button import show_weather_forecast
 from api.api import API_COORD
 from loader import bot
+from database.database import data
 
 
 # Этот хэндлер будет обрабатывать нажатую кнопку с локацией и выводить погоду
 @bot.callback_query_handler(func=lambda call: True)
-def callback_query(call: CallbackQuery) -> None:
+def callback_quer(call: CallbackQuery) -> None:
     if call.data:
+        data.append(call.data)
         bot.answer_callback_query(callback_query_id=call.id, text=f'Погода в городе:\n')
         weather_res = requests.get(url=f"{API_COORD}{call.data}&appid={API_KEY}&units=metric", timeout=10)
         data_weather = json.loads(s=weather_res.text)
@@ -21,3 +24,6 @@ def callback_query(call: CallbackQuery) -> None:
                               f"Влажность: {data_weather['main']['humidity']} %\n"
                               f"Скорость ветра: {data_weather['wind']['speed']} метр/сек"
                          )
+        bot.send_message(chat_id=call.message.chat.id,
+                         text=f'Желаете выбрать другой город или хотите посмотреть прогноз погоды на ближайшие сутки?',
+                         reply_markup=show_weather_forecast())
