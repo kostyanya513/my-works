@@ -25,5 +25,5 @@ def show_weather_today(call: CallbackQuery) -> None:
                               f"Скорость ветра: {weather_res['wind']['speed']} метр/сек"
                          )
         bot.send_message(chat_id=call.message.chat.id,
-                         text=f'Желаете выбрать другой город или хотите посмотреть прогноз погоды на ближайшие сутки?',
+                         text=f'Что желаете узнать?',
                          reply_markup=show_weather_forecast())

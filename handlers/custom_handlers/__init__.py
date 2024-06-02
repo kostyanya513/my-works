@@ -4,6 +4,10 @@ from . import callback_max_temp
 from . import callback_min_temp
 from . import callback_other_city
 from . import show_weather
+from . import temp_forecast
+from . import lower_temp
+from . import custom_temperature
+from . import temp_correct
 from . import cancel
 from . import keyboard_location
 from . import unknown_message

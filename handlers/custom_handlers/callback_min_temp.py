@@ -8,7 +8,7 @@ from states.state_bot import MyStates
 # Этот хэндлер срабатывает, при нажатии на кнопку "Минимальная температура"
 # и выводит на экран прогноз по минимальной температуре
 @bot.callback_query_handler(func=lambda call: call.data == 'minim_temp', state=[MyStates.select_temp])
-def callback_query(call: CallbackQuery) -> None:
+def get_min_temp(call: CallbackQuery) -> None:
     with bot.retrieve_data(user_id=call.from_user.id, chat_id=call.message.chat.id) as data_location:
         res = api.get_temp(lat=data_location['lat'], lon=data_location['lon'])
     if res:

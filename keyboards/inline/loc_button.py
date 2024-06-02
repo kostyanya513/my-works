@@ -19,8 +19,9 @@ def show_weather_forecast() -> InlineKeyboardMarkup:
     markup = InlineKeyboardMarkup()
     markup.row_width = 1
     # Создаём кнопки и добавляем их к клавиатуре
-    markup.add(InlineKeyboardButton(text='Выбрать другой город', callback_data='other_city'),
-               InlineKeyboardButton(text='Узнать прогноз на ближайшие сутки', callback_data='forecast'))
+    markup.add(InlineKeyboardButton(text='Узнать погоду в другом городе', callback_data='other_city'),
+               InlineKeyboardButton(text='Узнать прогноз на ближайшие сутки', callback_data='forecast'),
+               InlineKeyboardButton(text='Узнать температурный прогноз по дням', callback_data='temp_data'))
     return markup
 
 
