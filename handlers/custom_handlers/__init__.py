@@ -8,6 +8,7 @@ from . import temp_forecast
 from . import lower_temp
 from . import custom_temperature
 from . import temp_correct
+from . import get_history_requests
 from . import cancel
 from . import keyboard_location
 from . import unknown_message
